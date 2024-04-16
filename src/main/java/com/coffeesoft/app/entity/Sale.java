@@ -30,7 +30,7 @@ public class Sale {
     private double totalSale;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinTable(name = "sale_product", joinColumns = @JoinColumn(name = "id_sale"),
-            inverseJoinColumns = @JoinColumn(name = "sale_id"))
+    @JoinTable(name = "sale_product", joinColumns = @JoinColumn(name = "sale_id"),
+            inverseJoinColumns = @JoinColumn(name = "productsale_id"))
     private List<ProductSale> productSale;
 }

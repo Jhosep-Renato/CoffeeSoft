@@ -17,14 +17,14 @@ public class ProductSale {
     @Column(name = "idproduct_sale")
     private int idProductSale;
 
-    @Column(name = "quantity_product")
+    @Column(name = "quantity")
     private int quantityProduct;
 
     @Column(name = "product_id")
     private int idProduct;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinTable(name = "sale_product", joinColumns = @JoinColumn(name = "idproduct_sale"),
+    @JoinTable(name = "sale_product", joinColumns = @JoinColumn(name = "sale_id"),
             inverseJoinColumns = @JoinColumn(name = "productsale_id"))
     private List<Sale> sales;
 }

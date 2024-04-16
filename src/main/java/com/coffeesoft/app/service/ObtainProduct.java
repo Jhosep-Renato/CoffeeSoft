@@ -1,12 +1,14 @@
 package com.coffeesoft.app.service;
 
 import com.coffeesoft.app.dto.SaleDto;
+import com.coffeesoft.app.entity.Cashier;
 import com.coffeesoft.app.entity.Product;
 import com.coffeesoft.app.entity.ProductSale;
 import com.coffeesoft.app.entity.Sale;
 import com.coffeesoft.app.repository.IProductRepository;
 import com.coffeesoft.app.repository.ISaleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +31,7 @@ public class ObtainProduct implements IObtainService {
     }
 
     @Override
+    @Transactional
     public boolean saveSales(List<SaleDto> saleDtoList) {
 
         try {
@@ -37,7 +40,7 @@ public class ObtainProduct implements IObtainService {
 
             Sale sale = new Sale();
             sale.setDateSale(new Date());
-            sale.setMinSale(System.currentTimeMillis());
+            sale.setMinSale(1L);
 
             sale.setTotalSale(saleDtoList.stream()
                     .mapToDouble(productSale -> {
@@ -48,10 +51,12 @@ public class ObtainProduct implements IObtainService {
                     .sum());
 
             sale.setProductSale(productSales);
+            Cashier cashier = new Cashier();
+            cashier.setId(1);
 
-            /*saleRepository.saveSale(sale);*/
+            sale.setCashier(cashier);
 
-            saleDtoList.forEach(p -> System.out.println(p.getProduct()));
+            saleRepository.saveSale(sale);
 
             return true;
 
@@ -60,6 +65,7 @@ public class ObtainProduct implements IObtainService {
         }
     }
 
+    @Transactional
     private List<ProductSale> findProduct(List<SaleDto> listSales) throws NullPointerException {
 
         List<ProductSale> productSales = new ArrayList<>();

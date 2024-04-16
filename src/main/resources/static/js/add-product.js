@@ -23,9 +23,10 @@ document.getElementById('addProduct').addEventListener('click', e => {
     const form = document.getElementById("formAddProduct");
 
     const formData = new FormData(form);
-    $('#modal1').modal('hide')
 
     fillInTheTable(formData)
+
+    $('#modal1').modal('hide')
 
     form.reset();
 });
@@ -74,18 +75,23 @@ function fillInTheTable(formData) {
 
     const tbody = document.getElementById("tbody");
 
-    let cadenas = formData.get("product");
+    let quantityElement = formData.get("quantity");
 
-    let id = `<td> ${numberRows + 1} </td>`;
-    let product = `<td> ${cadenas} </td>`;
-    let price = `<td> ${formData.get("price")} </td>`;
-    let quantity = `<td> ${formData.get("quantity")} </td>`;
-    let total = `<td> S/. ${formData.get("price") * formData.get("quantity")} </td>`;
-    let action = `<td> <button type="button" class="btn btn-danger delete">Remove Product</button> </td>`;
+    if (quantityElement !== 0) {
 
-    tbody.innerHTML += `<tr>${id + product + price + quantity + total + action}</tr>`;
+        let priceElement = formData.get("price");
 
-    addEvents();
+        let id = `<td> ${numberRows + 1} </td>`;
+        let product = `<td> ${formData.get("product")} </td>`;
+        let price = `<td> ${priceElement} </td>`;
+        let quantity = `<td> ${quantityElement} </td>`;
+        let total = `<td> S/. ${priceElement * quantityElement} </td>`;
+        let action = `<td> <button type="button" class="btn btn-danger delete">Remove Product</button> </td>`;
+
+        tbody.innerHTML += `<tr>${id + product + price + quantity + total + action}</tr>`;
+
+        addEvents();
+    }
 }
 
 function addEvents() {
