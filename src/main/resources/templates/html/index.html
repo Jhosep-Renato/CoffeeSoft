@@ -234,11 +234,15 @@
 
 
                                                 <select class="form-select" th:field="*{product}" id="product-select">
+
                                                     <option value="0" selected>Please selected a option</option>
+
                                                     <option th:each="productTemp : ${theProducts}"
-                                                            th:value="${productTemp.idProduct} + ' ' + ${productTemp.nameProduct} " th:text="${productTemp.nameProduct}"
+                                                            th:value="${productTemp.nameProduct} " th:text="${productTemp.nameProduct}"
                                                             th:data-price="${productTemp.price}"/>
+
                                                 </select>
+
                                             </div>
 
                                             <div class="mb-3">
@@ -266,25 +270,32 @@
                         </div>
                     </div>
 
-                    <table class="table my-5 text-center">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
+                    <form th:action="@{/processProduct}" method="post">
+                        <input type="hidden" id="processProductUrl" th:value="@{/processProduct}" />
 
-                        <tbody id="tbody">
+                        <table class="table my-5 text-center" id="table">
 
-                        </tbody>
-                    </table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tbody">
+
+                            </tbody>
+
+                        </table>
 
 
-                    <button type="button" class="btn btn-primary">Make a Sale</button>
+                        <button type="button" class="btn btn-primary" id="sale">Make a Sale</button>
+
+                    </form>
                 </div>
                 <!-- /.container-fluid -->
 

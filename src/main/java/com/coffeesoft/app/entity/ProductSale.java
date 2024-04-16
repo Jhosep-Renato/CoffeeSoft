@@ -1,9 +1,15 @@
 package com.coffeesoft.app.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
-@Table(name = "product_sale")
+@Table(name = "product_sale") @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class ProductSale {
 
     @Id
@@ -14,11 +20,11 @@ public class ProductSale {
     @Column(name = "quantity_product")
     private int quantityProduct;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "id_product")
-    private Product product;
+    @Column(name = "product_id")
+    private int idProduct;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sale_id", referencedColumnName = "id_sale")
-    private Sale saleId;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinTable(name = "sale_product", joinColumns = @JoinColumn(name = "idproduct_sale"),
+            inverseJoinColumns = @JoinColumn(name = "productsale_id"))
+    private List<Sale> sales;
 }

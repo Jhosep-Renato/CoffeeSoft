@@ -1,11 +1,14 @@
 package com.coffeesoft.app.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "sale")
+@Table(name = "sale") @Setter @Getter
 public class Sale {
 
     @Id
@@ -25,4 +28,9 @@ public class Sale {
 
     @Column(name = "total_sale")
     private double totalSale;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinTable(name = "sale_product", joinColumns = @JoinColumn(name = "id_sale"),
+            inverseJoinColumns = @JoinColumn(name = "sale_id"))
+    private List<ProductSale> productSale;
 }
