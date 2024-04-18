@@ -45,7 +45,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" th:href="@{/home}">
                     <i class="fa-solid fa-scale-balanced"></i>
                     <span>Sale</span></a>
             </li>
@@ -68,7 +68,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
+                        <a class="collapse-item" th:href="@{/show-sale}">Sales</a>
                         <a class="collapse-item" href="cards.html">Cards</a>
                     </div>
                 </div>
@@ -246,13 +246,13 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="price" class="col-form-label">Price:</label>
-                                                <input type="text" class="form-control" id="price"  th:field="*{price}">
+                                                <label class="col-form-label">Price:</label>
+                                                <input type="text" class="form-control" th:field="*{price}">
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="quantity" class="col-form-label">Quantity:</label>
-                                                <input type="text" class="form-control" id="quantity" th:field="*{quantity}" >
+                                                <label class="col-form-label">Quantity:</label>
+                                                <input type="text" class="form-control" th:field="*{quantity}" >
                                             </div>
 
                                     </div>
@@ -297,6 +297,7 @@
 
                     </form>
                 </div>
+
                 <!-- /.container-fluid -->
 
             </div>

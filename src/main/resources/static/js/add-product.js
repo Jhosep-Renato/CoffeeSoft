@@ -1,4 +1,5 @@
 const priceElement = document.getElementById('price');
+const tbody = document.getElementById("tbody");
 
 
 document.getElementById('product-select').addEventListener('change', function(e) {
@@ -16,6 +17,7 @@ document.getElementById('product-select').addEventListener('change', function(e)
 });
 
 
+
 document.getElementById('addProduct').addEventListener('click', e => {
 
     e.preventDefault();
@@ -24,7 +26,7 @@ document.getElementById('addProduct').addEventListener('click', e => {
 
     const formData = new FormData(form);
 
-    fillInTheTable(formData)
+    fillInTheTable(formData);
 
     $('#modal1').modal('hide')
 
@@ -59,21 +61,21 @@ document.getElementById('sale').addEventListener('click', () => {
     })
     .then(res => {
         if (res.ok) {
-            console.log(res);
             console.log("EXCELLENT");
         } else {
             console.log("SORRY BUT,  THERE IS A ERROR");
         }
     })
+
+    tbody.innerHTML = "";
 });
 
 
 
 function fillInTheTable(formData) {
 
-    let numberRows = document.querySelector("tbody").rows.length;
+    let numberRows = tbody.rows.length;
 
-    const tbody = document.getElementById("tbody");
 
     let quantityElement = formData.get("quantity");
 
@@ -107,4 +109,6 @@ function addEvents() {
             });
         });
 }
+
+
 

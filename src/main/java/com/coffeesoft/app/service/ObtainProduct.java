@@ -10,6 +10,7 @@ import com.coffeesoft.app.repository.ISaleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ObtainProduct implements IObtainService {
 
     @Override
     @Transactional
-    public boolean saveSales(List<SaleDto> saleDtoList) {
+    public void saveSales(List<SaleDto> saleDtoList) {
 
         try {
 
@@ -40,7 +41,7 @@ public class ObtainProduct implements IObtainService {
 
             Sale sale = new Sale();
             sale.setDateSale(new Date());
-            sale.setMinSale(1L);
+            sale.setMinSale(new Time(System.currentTimeMillis()));
 
             sale.setTotalSale(saleDtoList.stream()
                     .mapToDouble(productSale -> {
@@ -56,13 +57,17 @@ public class ObtainProduct implements IObtainService {
 
             sale.setCashier(cashier);
 
-            saleRepository.saveSale(sale);
-
-            return true;
+            saleRepository.save(sale);
 
         } catch (NullPointerException exception) {
-            return false;
+            throw new NullPointerException("There are null products");
         }
+    }
+
+    @Override
+    public List<Sale> findSaleAll() {
+
+            return saleRepository.findAll();
     }
 
     @Transactional

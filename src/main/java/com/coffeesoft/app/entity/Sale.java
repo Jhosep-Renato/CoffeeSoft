@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Sale {
     private Date dateSale;
 
     @Column(name = "min_sale")
-    private Long minSale;
+    private Time minSale;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cashier_id", referencedColumnName = "id")
@@ -29,7 +30,7 @@ public class Sale {
     @Column(name = "total_sale")
     private double totalSale;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "sale_product", joinColumns = @JoinColumn(name = "sale_id"),
             inverseJoinColumns = @JoinColumn(name = "productsale_id"))
     private List<ProductSale> productSale;
