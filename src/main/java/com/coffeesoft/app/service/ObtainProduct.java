@@ -3,9 +3,10 @@ package com.coffeesoft.app.service;
 import com.coffeesoft.app.dto.SaleDto;
 import com.coffeesoft.app.entity.Cashier;
 import com.coffeesoft.app.entity.Product;
-import com.coffeesoft.app.entity.ProductSale;
+import com.coffeesoft.app.entity.ProductsSold;
 import com.coffeesoft.app.entity.Sale;
 import com.coffeesoft.app.repository.IProductRepository;
+import com.coffeesoft.app.repository.IProductSoldRepository;
 import com.coffeesoft.app.repository.ISaleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +21,15 @@ public class ObtainProduct implements IObtainService {
 
     private final IProductRepository repository;
     private final ISaleRepository saleRepository;
+    private final IProductSoldRepository productSoldRepository;
 
-    public ObtainProduct(IProductRepository repository, ISaleRepository saleRepository) {
+    public ObtainProduct(IProductRepository repository, ISaleRepository saleRepository,
+                         IProductSoldRepository productSoldRepository) {
         this.repository = repository;
         this.saleRepository = saleRepository;
+        this.productSoldRepository = productSoldRepository;
     }
+
 
     @Override
     public List<Product> products() {
@@ -36,8 +41,6 @@ public class ObtainProduct implements IObtainService {
     public void saveSales(List<SaleDto> saleDtoList) {
 
         try {
-
-            List<ProductSale> productSales = findProduct(saleDtoList);
 
             Sale sale = new Sale();
             sale.setDateSale(new Date());
@@ -51,13 +54,14 @@ public class ObtainProduct implements IObtainService {
                     })
                     .sum());
 
-            sale.setProductSale(productSales);
             Cashier cashier = new Cashier();
             cashier.setId(1);
 
             sale.setCashier(cashier);
 
-            saleRepository.save(sale);
+            Sale findSale = saleRepository.save(sale);
+
+            saveProduct(saleDtoList, findSale);
 
         } catch (NullPointerException exception) {
             throw new NullPointerException("There are null products");
@@ -71,23 +75,24 @@ public class ObtainProduct implements IObtainService {
     }
 
     @Transactional
-    private List<ProductSale> findProduct(List<SaleDto> listSales) throws NullPointerException {
+    private void saveProduct(List<SaleDto> listSales, Sale sale) throws NullPointerException {
 
-        List<ProductSale> productSales = new ArrayList<>();
+        List<ProductsSold> productSales = new ArrayList<>();
 
         for (SaleDto saleDto : listSales) {
 
-            int idProduct = repository.findProduct(saleDto.getProduct().trim()).getIdProduct();
+            Product product = repository.findProduct(saleDto.getProduct().trim());
             int quantity = Integer.parseInt(saleDto.getQuantity().trim());
 
 
-            ProductSale productSale = new ProductSale();
-            productSale.setQuantityProduct(quantity);
-            productSale.setIdProduct(idProduct);
+            ProductsSold productSold = new ProductsSold();
+            productSold.setQuantityProduct(quantity);
+            productSold.setProductId(product);
+            productSold.setSaleId(sale);
 
-            productSales.add(productSale);
+            productSales.add(productSold);
         }
 
-        return productSales;
+        productSoldRepository.saveAll(productSales);
     }
 }

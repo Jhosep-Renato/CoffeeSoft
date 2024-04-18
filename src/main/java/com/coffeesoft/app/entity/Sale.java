@@ -29,9 +29,4 @@ public class Sale {
 
     @Column(name = "total_sale")
     private double totalSale;
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinTable(name = "sale_product", joinColumns = @JoinColumn(name = "sale_id"),
-            inverseJoinColumns = @JoinColumn(name = "productsale_id"))
-    private List<ProductSale> productSale;
 }
