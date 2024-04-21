@@ -28,7 +28,7 @@ public class IndexController {
         model.addAttribute("theProducts", theProducts);
         model.addAttribute("theProductDto", new ProductDto());
 
-        return "html/index";
+        return "html/home";
     }
 
     @GetMapping("/show-sale")
