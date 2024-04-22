@@ -1,8 +1,8 @@
-const priceElement = document.getElementById('price');
 const tbody = document.getElementById("tbody");
 
-
 document.getElementById('product-select').addEventListener('change', function(e) {
+
+    const priceElement = document.getElementById('price');
 
     let selectedOption = e.target.options[e.target.selectedIndex];
 
@@ -26,6 +26,7 @@ document.getElementById('addProduct').addEventListener('click', e => {
 
     const formData = new FormData(form);
 
+    console.log(formData)
     fillInTheTable(formData);
 
     $('#modal1').modal('hide')
@@ -60,6 +61,7 @@ document.getElementById('sale').addEventListener('click', () => {
         body: JSON.stringify(sales)
     })
     .then(res => {
+        console.log(sales)
         if (res.ok) {
             console.log("EXCELLENT");
         } else {

@@ -5,12 +5,13 @@ import com.coffeesoft.app.entity.Product;
 import com.coffeesoft.app.entity.Sale;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IObtainService {
 
-    List<Product> products();
+    Set<Product> products();
 
-    void saveSales(List<SaleDto> saleDtos);
+    void saveSales(Set<SaleDto> sales);
 
     List<Sale> findSaleAll();
 }

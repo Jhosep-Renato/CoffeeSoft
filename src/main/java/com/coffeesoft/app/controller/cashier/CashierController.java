@@ -1,4 +1,4 @@
-package com.coffeesoft.app.controller;
+package com.coffeesoft.app.controller.cashier;
 
 import com.coffeesoft.app.dto.ProductDto;
 import com.coffeesoft.app.dto.SaleDto;
@@ -10,25 +10,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
-public class IndexController {
+public class CashierController {
 
     private final IObtainService obtainService;
 
-    public IndexController(IObtainService obtainService) {
+    public CashierController(IObtainService obtainService) {
         this.obtainService = obtainService;
     }
 
-    @GetMapping("/home")
-    public String index(Model model) {
+    @GetMapping("/home-cashier")
+    public String homeCashier(Model model) {
 
-        List<Product> theProducts = obtainService.products();
+        Set<Product> theProducts = obtainService.products();
 
         model.addAttribute("theProducts", theProducts);
-        model.addAttribute("theProductDto", new ProductDto());
 
-        return "html/home";
+        return "html/cashier/home-cashier";
     }
 
     @GetMapping("/show-sale")
@@ -38,15 +38,15 @@ public class IndexController {
 
         model.addAttribute("theSales", theSale);
 
-        return "html/show_sale";
+        return "html/cashier/show_sale";
     }
 
     @PostMapping("/processProduct")
-    public String process(@RequestBody List<SaleDto> saleDto) {
+    public String processProduct(@RequestBody Set<SaleDto> saleDto) {
 
         obtainService.saveSales(saleDto);
 
-        return "html/test";
+        return "html/cashier/home-cashier";
     }
 
 }

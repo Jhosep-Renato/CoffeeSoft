@@ -1,20 +1,13 @@
 package com.coffeesoft.app.service;
 
 import com.coffeesoft.app.dto.SaleDto;
-import com.coffeesoft.app.entity.Cashier;
-import com.coffeesoft.app.entity.Product;
-import com.coffeesoft.app.entity.ProductsSold;
-import com.coffeesoft.app.entity.Sale;
-import com.coffeesoft.app.repository.IProductRepository;
-import com.coffeesoft.app.repository.IProductSoldRepository;
-import com.coffeesoft.app.repository.ISaleRepository;
+import com.coffeesoft.app.entity.*;
+import com.coffeesoft.app.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ObtainProduct implements IObtainService {
@@ -32,13 +25,13 @@ public class ObtainProduct implements IObtainService {
 
 
     @Override
-    public List<Product> products() {
-        return repository.findAll();
+    public Set<Product> products() {
+        return new HashSet<>(repository.findAll());
     }
 
     @Override
     @Transactional
-    public void saveSales(List<SaleDto> saleDtoList) {
+    public void saveSales(Set<SaleDto> saleProducts) {
 
         try {
 
@@ -46,7 +39,7 @@ public class ObtainProduct implements IObtainService {
             sale.setDateSale(new Date());
             sale.setMinSale(new Time(System.currentTimeMillis()));
 
-            sale.setTotalSale(saleDtoList.stream()
+            sale.setTotalSale(saleProducts.stream()
                     .mapToDouble(productSale -> {
                         double price = Double.parseDouble(productSale.getPrice());
 
@@ -59,9 +52,9 @@ public class ObtainProduct implements IObtainService {
 
             sale.setCashier(cashier);
 
-            Sale findSale = saleRepository.save(sale);
+            Sale copySaleObject = saleRepository.save(sale);
 
-            saveProduct(saleDtoList, findSale);
+            saveProduct(saleProducts, copySaleObject);
 
         } catch (NullPointerException exception) {
             throw new NullPointerException("There are null products");
@@ -75,11 +68,11 @@ public class ObtainProduct implements IObtainService {
     }
 
     @Transactional
-    private void saveProduct(List<SaleDto> listSales, Sale sale) throws NullPointerException {
+    private void saveProduct(Set<SaleDto> saleProducts, Sale copySaleObject) throws NullPointerException {
 
         List<ProductsSold> productSales = new ArrayList<>();
 
-        for (SaleDto saleDto : listSales) {
+        for (SaleDto saleDto : saleProducts) {
 
             Product product = repository.findProduct(saleDto.getProduct().trim());
             int quantity = Integer.parseInt(saleDto.getQuantity().trim());
@@ -88,7 +81,7 @@ public class ObtainProduct implements IObtainService {
             ProductsSold productSold = new ProductsSold();
             productSold.setQuantityProduct(quantity);
             productSold.setProductId(product);
-            productSold.setSaleId(sale);
+            productSold.setSaleId(copySaleObject);
 
             productSales.add(productSold);
         }

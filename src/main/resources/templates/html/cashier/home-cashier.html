@@ -33,7 +33,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="home.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="home-cashier.html">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fa-solid fa-mug-saucer" style="color: #ffffff;"></i>
                 </div>
@@ -222,7 +222,8 @@
                         <div class="modal-dialog" id="modal11">
 
                             <div class="modal-content">
-                                <form id="formAddProduct" th:object="${theProductDto}">
+
+                                <form action="#" id="formAddProduct" >
 
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Sale</h1>
@@ -235,13 +236,13 @@
                                                 <label class="col-form-label">Product:</label>
 
 
-                                                <select class="form-select" th:field="*{product}" id="product-select">
+                                                <select class="form-select" id="product-select" name="product">
 
                                                     <option value="0" selected>Please selected a option</option>
 
                                                     <option th:each="productTemp : ${theProducts}"
-                                                            th:value="${productTemp.nameProduct} " th:text="${productTemp.nameProduct}"
-                                                            th:data-price="${productTemp.price}"/>
+                                                            th:value="${productTemp.nameProduct}" th:text="${productTemp.nameProduct}"
+                                                            th:data-price="${productTemp.price}" />
 
                                                 </select>
 
@@ -249,12 +250,12 @@
 
                                             <div class="mb-3">
                                                 <label class="col-form-label">Price:</label>
-                                                <input type="text" class="form-control" th:field="*{price}">
+                                                <input type="text" class="form-control" id="price" name="price" value="0.0"/>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="col-form-label">Quantity:</label>
-                                                <input type="text" class="form-control" th:field="*{quantity}" >
+                                                <input type="text" class="form-control" name="quantity" />
                                             </div>
 
                                     </div>
@@ -272,7 +273,7 @@
                         </div>
                     </div>
 
-                    <form th:action="@{/processProduct}" method="post">
+                    <form th:action="@{/processProduct}" method="POST">
                         <input type="hidden" id="processProductUrl" th:value="@{/processProduct}" />
 
                         <table class="table my-5 text-center" id="table">
