@@ -3,7 +3,9 @@ package com.coffeesoft.app.controller.cashier;
 import com.coffeesoft.app.dto.SaleDto;
 import com.coffeesoft.app.entity.Product;
 import com.coffeesoft.app.entity.Sale;
-import com.coffeesoft.app.service.IObtainService;
+import com.coffeesoft.app.service.scashier.ISalesProductsService;
+import com.coffeesoft.app.service.scashier.ISalesService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,16 +18,20 @@ import java.util.*;
 @Controller
 public class CashierController {
 
-    private final IObtainService obtainService;
+    private final ISalesService obtainService;
 
-    public CashierController(IObtainService obtainService) {
+    private final ISalesProductsService salesProductsService;
+
+    @Lazy
+    public CashierController(ISalesService obtainService, ISalesProductsService salesProductsService) {
         this.obtainService = obtainService;
+        this.salesProductsService = salesProductsService;
     }
 
     @GetMapping("/home-cashier")
     public String homeCashier(Model model) {
 
-        Set<Product> theProducts = obtainService.products();
+        Set<Product> theProducts = salesProductsService.getProducts();
 
         model.addAttribute("theProducts", theProducts);
 
@@ -36,7 +42,7 @@ public class CashierController {
     public String showSale(@PageableDefault Pageable pageable,
                            Model model) {
 
-        Page<Sale> pageSale = obtainService.findSaleAll(pageable);
+        Page<Sale> pageSale = salesProductsService.findSaleAll(pageable);
 
         model.addAttribute("theSales", pageSale);
 

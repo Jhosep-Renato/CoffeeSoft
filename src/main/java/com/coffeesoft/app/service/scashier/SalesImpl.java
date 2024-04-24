@@ -1,15 +1,9 @@
-package com.coffeesoft.app.service;
+package com.coffeesoft.app.service.scashier;
 
 import com.coffeesoft.app.dto.SaleDto;
 import com.coffeesoft.app.entity.*;
 import com.coffeesoft.app.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +11,7 @@ import java.sql.Time;
 import java.util.*;
 
 @Service
-public class ObtainProduct implements IObtainService {
+public class SalesImpl implements ISalesService {
 
     private final IProductRepository productRepository;
 
@@ -25,22 +19,13 @@ public class ObtainProduct implements IObtainService {
 
     private final IProductSoldRepository productSoldRepository;
 
-    private final ISalePaginableRepository paginableRepository;
-
     @Lazy
-    @Autowired
-    public ObtainProduct(IProductRepository productRepository, IProductSoldRepository productSoldRepository,
-                         ISaleRepository saleRepository, ISalePaginableRepository paginableRepository) {
+    public SalesImpl(IProductRepository productRepository, IProductSoldRepository productSoldRepository,
+                     ISaleRepository saleRepository) {
         this.productRepository = productRepository;
         this.productSoldRepository = productSoldRepository;
         this.saleRepository = saleRepository;
-        this.paginableRepository = paginableRepository;
 
-    }
-
-    @Override
-    public Set<Product> products() {
-        return new HashSet<>(productRepository.findAll());
     }
 
     @Override
@@ -71,15 +56,11 @@ public class ObtainProduct implements IObtainService {
             saveProduct(saleProducts, copySaleObject);
 
         } catch (NullPointerException exception) {
-            throw new NullPointerException("There are null products");
+            throw new NullPointerException("There are null getProducts");
         }
     }
 
-    @Override
-    public Page<Sale> findSaleAll(Pageable pageable) {
 
-            return paginableRepository.findAll(pageable);
-    }
 
     @Transactional
     private void saveProduct(Set<SaleDto> saleProducts, Sale copySaleObject) throws NullPointerException {
@@ -101,10 +82,5 @@ public class ObtainProduct implements IObtainService {
         }
 
         productSoldRepository.saveAll(productSales);
-    }
-
-    private List<Sale> obtainSale() throws NullPointerException{
-
-        return saleRepository.findAll();
     }
 }

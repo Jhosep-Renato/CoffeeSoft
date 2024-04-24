@@ -238,8 +238,10 @@
             </div>
             <div class="modal-body">Select "logout" if you want to</div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <form action="#" th:action="@{/logout}" method="POST">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <input class="btn btn-secondary" type="submit" value="Logout" />
+                </form>
             </div>
         </div>
     </div>
