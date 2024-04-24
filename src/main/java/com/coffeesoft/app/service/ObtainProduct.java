@@ -3,6 +3,13 @@ package com.coffeesoft.app.service;
 import com.coffeesoft.app.dto.SaleDto;
 import com.coffeesoft.app.entity.*;
 import com.coffeesoft.app.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,21 +19,28 @@ import java.util.*;
 @Service
 public class ObtainProduct implements IObtainService {
 
-    private final IProductRepository repository;
+    private final IProductRepository productRepository;
+
     private final ISaleRepository saleRepository;
+
     private final IProductSoldRepository productSoldRepository;
 
-    public ObtainProduct(IProductRepository repository, ISaleRepository saleRepository,
-                         IProductSoldRepository productSoldRepository) {
-        this.repository = repository;
-        this.saleRepository = saleRepository;
-        this.productSoldRepository = productSoldRepository;
-    }
+    private final ISalePaginableRepository paginableRepository;
 
+    @Lazy
+    @Autowired
+    public ObtainProduct(IProductRepository productRepository, IProductSoldRepository productSoldRepository,
+                         ISaleRepository saleRepository, ISalePaginableRepository paginableRepository) {
+        this.productRepository = productRepository;
+        this.productSoldRepository = productSoldRepository;
+        this.saleRepository = saleRepository;
+        this.paginableRepository = paginableRepository;
+
+    }
 
     @Override
     public Set<Product> products() {
-        return new HashSet<>(repository.findAll());
+        return new HashSet<>(productRepository.findAll());
     }
 
     @Override
@@ -62,9 +76,9 @@ public class ObtainProduct implements IObtainService {
     }
 
     @Override
-    public List<Sale> findSaleAll() {
+    public Page<Sale> findSaleAll(Pageable pageable) {
 
-            return saleRepository.findAll();
+            return paginableRepository.findAll(pageable);
     }
 
     @Transactional
@@ -74,7 +88,7 @@ public class ObtainProduct implements IObtainService {
 
         for (SaleDto saleDto : saleProducts) {
 
-            Product product = repository.findProduct(saleDto.getProduct().trim());
+            Product product = productRepository.findProduct(saleDto.getProduct().trim());
             int quantity = Integer.parseInt(saleDto.getQuantity().trim());
 
 
@@ -87,5 +101,10 @@ public class ObtainProduct implements IObtainService {
         }
 
         productSoldRepository.saveAll(productSales);
+    }
+
+    private List<Sale> obtainSale() throws NullPointerException{
+
+        return saleRepository.findAll();
     }
 }

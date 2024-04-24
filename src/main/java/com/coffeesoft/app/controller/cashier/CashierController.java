@@ -1,16 +1,17 @@
 package com.coffeesoft.app.controller.cashier;
 
-import com.coffeesoft.app.dto.ProductDto;
 import com.coffeesoft.app.dto.SaleDto;
 import com.coffeesoft.app.entity.Product;
 import com.coffeesoft.app.entity.Sale;
 import com.coffeesoft.app.service.IObtainService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class CashierController {
@@ -32,11 +33,30 @@ public class CashierController {
     }
 
     @GetMapping("/show-sale")
-    public String showSale(Model model) {
+    public String showSale(@PageableDefault Pageable pageable,
+                           Model model) {
 
-        List<Sale> theSale = obtainService.findSaleAll();
+        Page<Sale> pageSale = obtainService.findSaleAll(pageable);
 
-        model.addAttribute("theSales", theSale);
+        model.addAttribute("theSales", pageSale);
+
+        int totalPages = pageSale.getTotalPages();
+        int currentPage = pageSale.getNumber();
+
+        int start = Math.max(1, currentPage);
+        int end = Math.min(currentPage + 5, totalPages);
+
+
+        if (totalPages > 0) {
+
+            List<Integer> pageNumbers = new ArrayList<>();
+
+            for (int i = start; i <= end; i++) {
+                pageNumbers.add(i);
+            }
+
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
 
         return "html/cashier/show_sale";
     }

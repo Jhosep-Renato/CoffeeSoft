@@ -68,7 +68,10 @@ public class SecurityConfig {
                                 .permitAll()
 
                 )
-                .logout(LogoutConfigurer::permitAll)
+                .logout(logout -> {
+                    logout.logoutSuccessUrl("/for");
+                    logout.permitAll();
+                })
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
