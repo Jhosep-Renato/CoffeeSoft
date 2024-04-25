@@ -2,8 +2,8 @@ package com.coffeesoft.app.service.scashier;
 
 import com.coffeesoft.app.entity.Product;
 import com.coffeesoft.app.entity.Sale;
-import com.coffeesoft.app.repository.IProductRepository;
-import com.coffeesoft.app.repository.ISalePaginableRepository;
+import com.coffeesoft.app.repository.rcashier.IProductRepository;
+import com.coffeesoft.app.repository.rcashier.ISalePaginableRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -155,26 +155,37 @@
                     <h3 class="fw-bolder text-center pt-5">Register a new Cashier</h3>
 
 
-                    <form class="py-5">
+                    <form class="py-5" th:object="${theCashier}" th:action="@{/process-request}" method="POST">
+
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors()}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors()}"
+                                    th:text="${err}" />
+                            </ul>
+                        </div>
+
+                        <div class="alert alert-success" th:if="${verification}">
+                            You have create the cashier
+                        </div>
 
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name: </label>
-                            <input type="text" class="form-control" id="firstName" placeholder="Ejm. Marcos">
+                            <input type="text" class="form-control" id="firstName" placeholder="Ejm. Marcos" th:field="*{firstName}">
                         </div>
 
                         <div class="mb-3">
                             <label for="lastName" class="form-label">Last Name: </label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Ejm. Galvez">
+                            <input type="text" class="form-control" id="lastName" placeholder="Ejm. Galvez" th:field="*{lastName}">
                         </div>
 
                         <div class="mb-3">
                             <label for="cellPhone" class="form-label">Cell Phone: </label>
-                            <input type="text" class="form-control" id="cellPhone" placeholder="Ejm. 983213221">
+                            <input type="text" class="form-control" id="cellPhone" placeholder="Ejm. 983213221" th:field="*{cellPhone}">
                         </div>
 
                         <div class="mb-3">
                             <label for="document" class="form-label">Document: </label>
-                            <input type="text" class="form-control" id="document" placeholder="Ejm. 23131231">
+                            <input type="text" class="form-control" id="document" placeholder="Ejm. 23131231" th:field="*{document}">
                         </div>
 
                         <input class="form-control btn btn-primary" type="submit" value="Register Cashier">

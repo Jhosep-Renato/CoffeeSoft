@@ -46,6 +46,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/home-cashier", "/show-sale").hasRole("EMPLOYEE")
                     .requestMatchers(HttpMethod.POST, "/processProduct").hasRole("EMPLOYEE")
                     .requestMatchers(HttpMethod.GET, "/home-admin").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/process-request").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 )
                 .formLogin(form ->

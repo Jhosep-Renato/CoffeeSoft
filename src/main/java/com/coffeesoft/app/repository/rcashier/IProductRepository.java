@@ -1,4 +1,4 @@
-package com.coffeesoft.app.repository;
+package com.coffeesoft.app.repository.rcashier;
 
 import com.coffeesoft.app.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,7 +2,9 @@ package com.coffeesoft.app.service.scashier;
 
 import com.coffeesoft.app.dto.SaleDto;
 import com.coffeesoft.app.entity.*;
-import com.coffeesoft.app.repository.*;
+import com.coffeesoft.app.repository.rcashier.IProductRepository;
+import com.coffeesoft.app.repository.rcashier.IProductSoldRepository;
+import com.coffeesoft.app.repository.rcashier.ISaleRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

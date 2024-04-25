@@ -1,9 +1,11 @@
 package com.coffeesoft.app.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(name = "account")
+@Table(name = "account") @Getter @Setter
 public class Account {
 
     @Id
