@@ -8,18 +8,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 public class AdminController {
 
-    private final ICashierFunctionalitiesService service;
+    private final ICashierFunctionalitiesService cashierService;
 
-    public AdminController(ICashierFunctionalitiesService service) {
-        this.service = service;
+    public AdminController(ICashierFunctionalitiesService cashierService) {
+        this.cashierService = cashierService;
     }
 
     @InitBinder
@@ -38,6 +37,32 @@ public class AdminController {
         return "html/admin/home-admin";
     }
 
+    @GetMapping("/update-cashier")
+    public String updateCashier(Model model) {
+
+        model.addAttribute("theCashier", new Cashier());
+
+        return "html/admin/update-cashier";
+    }
+
+    @GetMapping("/search-dni")
+    public String searchDni(@RequestParam(defaultValue = "0") int dni, Model model) {
+
+        Optional<Cashier> optionalCashier = cashierService.updateCashier(dni);
+
+        if (optionalCashier.isPresent()) {
+
+            model.addAttribute("theCashier", optionalCashier.get());
+        } else {
+
+            model.addAttribute("theCashier", new Cashier());
+            model.addAttribute("searchMessage", "Cashier NOT FOUND");
+        }
+
+        return "html/admin/update-cashier";
+    }
+
+
     @PostMapping("/process-request")
     public String processRequest(@Valid @ModelAttribute("theCashier") Cashier theCashier,
                                  BindingResult bindingResult, Model model) {
@@ -47,7 +72,7 @@ public class AdminController {
             return "html/admin/home-admin";
         }
 
-        service.saveCashier(theCashier);
+        cashierService.saveCashier(theCashier);
         model.addAttribute("verification", true);
         return "html/admin/home-admin";
     }

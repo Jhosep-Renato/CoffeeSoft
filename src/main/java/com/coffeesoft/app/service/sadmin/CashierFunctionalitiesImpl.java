@@ -3,15 +3,18 @@ package com.coffeesoft.app.service.sadmin;
 import com.coffeesoft.app.entity.Account;
 import com.coffeesoft.app.entity.Cashier;
 import com.coffeesoft.app.repository.radmin.ICashierFunctionalitiesRepository;
+import jakarta.persistence.NoResultException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CashierFunctionalitiesImpl implements ICashierFunctionalitiesService {
 
-    private final ICashierFunctionalitiesRepository repository;
+    private final ICashierFunctionalitiesRepository cashierService;
 
-    public CashierFunctionalitiesImpl(ICashierFunctionalitiesRepository repository) {
-        this.repository = repository;
+    public CashierFunctionalitiesImpl(ICashierFunctionalitiesRepository cashierService) {
+        this.cashierService = cashierService;
     }
 
     @Override
@@ -24,7 +27,29 @@ public class CashierFunctionalitiesImpl implements ICashierFunctionalitiesServic
 
         theCashier.setAccount(account);
 
-        repository.saveCashier(theCashier);
+        cashierService.saveCashier(theCashier);
 
     }
+
+    @Override
+    public Optional<Cashier> updateCashier(int dni) {
+
+        if (dni == 0) {
+            throw new NullPointerException("The DNI can't be null");
+        }
+
+        Cashier cashier = null;
+
+        try {
+
+            cashier = cashierService.findCashier(dni);
+
+        } catch (NoResultException ignored) {
+        }
+
+        return Optional.ofNullable(cashier);
+
+    }
+
+
 }
