@@ -43,15 +43,15 @@ public class SecurityConfig {
         http.authorizeHttpRequests(config ->
 
             config
-                    .requestMatchers(HttpMethod.GET, "/coffee-soft/home-cashier", "/coffee-soft/show-sale").hasRole("EMPLOYEE")
-                    .requestMatchers(HttpMethod.POST, "/coffee-soft/processProduct").hasRole("EMPLOYEE")
-                    .requestMatchers(HttpMethod.GET, "/coffee-soft/home-admin").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/coffee-soft/process-request").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/home-cashier", "/show-sale").hasRole("EMPLOYEE")
+                    .requestMatchers(HttpMethod.POST, "/processProduct").hasRole("EMPLOYEE")
+                    .requestMatchers(HttpMethod.GET, "/home-admin").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/process-request").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 )
                 .formLogin(form ->
                         form
-                                .loginPage("/coffee-soft/form")
+                                .loginPage("/form")
                                 .loginProcessingUrl("/processLogin")
                                 .successHandler((request, response, authentication) -> {
 
@@ -73,6 +73,7 @@ public class SecurityConfig {
                     logout.logoutSuccessUrl("/form");
                     logout.permitAll();
                 })
+                .exceptionHandling(forbidden -> forbidden.accessDeniedPage("/forbidden"))
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

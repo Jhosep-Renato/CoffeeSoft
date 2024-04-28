@@ -11,11 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
-@RequestMapping("/coffee-soft")
 public class AdminController {
 
     private final IAdminFunctionalitiesService cashierService;

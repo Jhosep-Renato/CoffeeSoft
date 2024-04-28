@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -36,8 +38,10 @@ public class SalesImpl implements ISalesService {
 
         try {
 
+            LocalDate localDate = LocalDate.now();
+
             Sale sale = new Sale();
-            sale.setDateSale(new Date());
+            sale.setDateSale(Date.valueOf(localDate));
             sale.setMinSale(new Time(System.currentTimeMillis()));
 
             sale.setTotalSale(saleProducts.stream()
