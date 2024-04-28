@@ -7,14 +7,12 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Repository
-public class CashierFunctionalitiesRepository implements ICashierFunctionalitiesRepository {
+public class AdminFunctionalitiesRepository implements IAdminFunctionalitiesRepository {
 
     private final EntityManager entityManager;
 
-    public CashierFunctionalitiesRepository(EntityManager entityManager) {
+    public AdminFunctionalitiesRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -27,7 +25,7 @@ public class CashierFunctionalitiesRepository implements ICashierFunctionalities
 
     @Override
     @Transactional
-    public Cashier findCashier(int dni) throws NoResultException {
+    public Cashier searchCashier(long dni) throws NoResultException {
 
         TypedQuery<Cashier> typedQuery = entityManager
                                                 .createQuery("FROM Cashier WHERE document =:dni", Cashier.class);
@@ -36,5 +34,12 @@ public class CashierFunctionalitiesRepository implements ICashierFunctionalities
         Cashier cashier = entityManager.find(Cashier.class, typedQuery.getSingleResult().getId());
 
         return cashier;
+    }
+
+    @Override
+    @Transactional
+    public void updateCashier(Cashier cashier) {
+
+        entityManager.merge(cashier);
     }
 }

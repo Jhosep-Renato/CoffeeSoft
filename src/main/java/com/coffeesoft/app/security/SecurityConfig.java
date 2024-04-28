@@ -43,15 +43,15 @@ public class SecurityConfig {
         http.authorizeHttpRequests(config ->
 
             config
-                    .requestMatchers(HttpMethod.GET, "/home-cashier", "/show-sale").hasRole("EMPLOYEE")
-                    .requestMatchers(HttpMethod.POST, "/processProduct").hasRole("EMPLOYEE")
-                    .requestMatchers(HttpMethod.GET, "/home-admin").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/process-request").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/coffee-soft/home-cashier", "/coffee-soft/show-sale").hasRole("EMPLOYEE")
+                    .requestMatchers(HttpMethod.POST, "/coffee-soft/processProduct").hasRole("EMPLOYEE")
+                    .requestMatchers(HttpMethod.GET, "/coffee-soft/home-admin").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/coffee-soft/process-request").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 )
                 .formLogin(form ->
                         form
-                                .loginPage("/form")
+                                .loginPage("/coffee-soft/form")
                                 .loginProcessingUrl("/processLogin")
                                 .successHandler((request, response, authentication) -> {
 
@@ -59,10 +59,10 @@ public class SecurityConfig {
 
                                         if (auth.getAuthority().equals("ROLE_EMPLOYEE")) {
 
-                                            response.sendRedirect("/home-cashier");
+                                            response.sendRedirect("/coffee-soft/home-cashier");
                                         } else if (auth.getAuthority().equals("ROLE_ADMIN")) {
 
-                                            response.sendRedirect("/home-admin");
+                                            response.sendRedirect("/coffee-soft/home-admin");
                                         }
                                     }
                                 })
@@ -70,7 +70,7 @@ public class SecurityConfig {
 
                 )
                 .logout(logout -> {
-                    logout.logoutSuccessUrl("/for");
+                    logout.logoutSuccessUrl("/form");
                     logout.permitAll();
                 })
                 .csrf(AbstractHttpConfigurer::disable);

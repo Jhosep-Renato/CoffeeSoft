@@ -12,7 +12,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected int id;
+    protected long id;
 
     @Column(name = "first_name")
     @NotNull(message = "The First Name can´t is empty")
@@ -32,7 +32,7 @@ public class Person {
     @Size(max = 8, min = 8, message = "Document incorrect | Size incorrect")
     private String document;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "account_id", referencedColumnName = "id_account")
     private Account account;
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
+@RequestMapping("/coffee-soft")
 public class CashierController {
 
     private final ISalesService obtainService;

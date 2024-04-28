@@ -163,7 +163,11 @@
                         </div>
                     </nav>
 
-                    <form class="py-5" th:object="${theCashier}" th:action="@{/process-request}" method="POST">
+                    <div th:if="${verification == false}" class="alert alert-info" role="alert">
+                        The DNI wasn't found
+                    </div>
+
+                    <form  th:object="${theCashier}" th:action="@{/update-cashier}" method="POST">
 
 
                         <div class="alert alert-danger" th:if="${#fields.hasErrors()}">
@@ -177,27 +181,32 @@
                             You have create the cashier
                         </div>
 
+
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="id" th:field="*{id}" >
+                        </div>
+
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name: </label>
-                            <input type="text" class="form-control" id="firstName" placeholder="Ejm. Marcos" th:field="*{firstName}" disabled>
+                            <input type="text" class="form-control" id="firstName" placeholder="Ejm. Marcos" th:field="*{firstName}" >
                         </div>
 
                         <div class="mb-3">
                             <label for="lastName" class="form-label">Last Name: </label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Ejm. Galvez" th:field="*{lastName}" disabled>
+                            <input type="text" class="form-control" id="lastName" placeholder="Ejm. Galvez" th:field="*{lastName}" >
                         </div>
 
                         <div class="mb-3">
                             <label for="cellPhone" class="form-label">Cell Phone: </label>
-                            <input type="text" class="form-control" id="cellPhone" placeholder="Ejm. 983213221" th:field="*{cellPhone}" disabled>
+                            <input type="text" class="form-control" id="cellPhone" placeholder="Ejm. 983213221" th:field="*{cellPhone}" >
                         </div>
 
                         <div class="mb-3">
                             <label for="document" class="form-label">Document: </label>
-                            <input type="text" class="form-control" id="document" placeholder="Ejm. 23131231" th:field="*{document}" disabled>
+                            <input type="text" class="form-control" id="document" placeholder="Ejm. 23131231" th:field="*{document}" >
                         </div>
 
-                        <input class="form-control btn btn-primary" type="submit" value="Register Cashier">
+                        <input class="form-control btn btn-primary" type="submit" value="Update Cashier Details">
 
                     </form>
 

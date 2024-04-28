@@ -1,8 +1,9 @@
 package com.coffeesoft.app.controller.admin;
 
 import com.coffeesoft.app.entity.Cashier;
-import com.coffeesoft.app.service.sadmin.ICashierFunctionalitiesService;
+import com.coffeesoft.app.service.sadmin.IAdminFunctionalitiesService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,14 +11,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/coffee-soft")
 public class AdminController {
 
-    private final ICashierFunctionalitiesService cashierService;
+    private final IAdminFunctionalitiesService cashierService;
 
-    public AdminController(ICashierFunctionalitiesService cashierService) {
+    @Value("${user.roles-name}")
+    private List<String> roles;
+
+    public AdminController(IAdminFunctionalitiesService cashierService) {
         this.cashierService = cashierService;
     }
 
@@ -32,6 +38,7 @@ public class AdminController {
     @GetMapping("/home-admin")
     public String home(Model model) {
 
+        model.addAttribute("theRoles", roles);
         model.addAttribute("theCashier", new Cashier());
 
         return "html/admin/home-admin";
@@ -48,7 +55,7 @@ public class AdminController {
     @GetMapping("/search-dni")
     public String searchDni(@RequestParam(defaultValue = "0") int dni, Model model) {
 
-        Optional<Cashier> optionalCashier = cashierService.updateCashier(dni);
+        Optional<Cashier> optionalCashier = cashierService.searchCashier(dni);
 
         if (optionalCashier.isPresent()) {
 
@@ -56,7 +63,7 @@ public class AdminController {
         } else {
 
             model.addAttribute("theCashier", new Cashier());
-            model.addAttribute("searchMessage", "Cashier NOT FOUND");
+            model.addAttribute("verification", false);
         }
 
         return "html/admin/update-cashier";
@@ -73,7 +80,25 @@ public class AdminController {
         }
 
         cashierService.saveCashier(theCashier);
+
         model.addAttribute("verification", true);
+
         return "html/admin/home-admin";
+    }
+
+    @PostMapping("/update-cashier")
+    public String updateCashier(@Valid @ModelAttribute("theCashier") Cashier theCashier,
+                                BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+
+            return "html/admin/update-cashier";
+        }
+
+        cashierService.updateCashier(theCashier);
+
+        model.addAttribute("theCashier", new Cashier());
+
+        return "html/admin/update-cashier";
     }
 }

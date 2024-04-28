@@ -4,9 +4,11 @@ import com.coffeesoft.app.entity.Cashier;
 
 import java.util.Optional;
 
-public interface ICashierFunctionalitiesService {
+public interface IAdminFunctionalitiesService {
 
     void saveCashier(Cashier theCashier);
 
-    Optional<Cashier> updateCashier(int dni);
+    Optional<Cashier> searchCashier(long dni);
+
+    void updateCashier(Cashier cashier);
 }

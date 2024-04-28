@@ -3,9 +3,10 @@ package com.coffeesoft.app.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Table(name = "account") @Getter @Setter
+@Table(name = "account") @Getter @Setter @ToString
 public class Account {
 
     @Id

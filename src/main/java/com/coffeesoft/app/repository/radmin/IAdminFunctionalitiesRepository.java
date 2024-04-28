@@ -2,9 +2,11 @@ package com.coffeesoft.app.repository.radmin;
 
 import com.coffeesoft.app.entity.Cashier;
 
-public interface ICashierFunctionalitiesRepository {
+public interface IAdminFunctionalitiesRepository {
 
     void saveCashier(Cashier theCashier);
 
-    Cashier findCashier(int dni);
+    Cashier searchCashier(long dni);
+
+    void updateCashier(Cashier cashier);
 }

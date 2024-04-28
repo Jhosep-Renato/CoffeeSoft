@@ -188,6 +188,13 @@
                             <input type="text" class="form-control" id="document" placeholder="Ejm. 23131231" th:field="*{document}">
                         </div>
 
+                        <div class="mb-3">
+                            <select id="inputState" class="form-select">
+                                <option selected>Selected plis</option>
+                                <option th:each="roles : ${theRoles}" th:value="${roles}" th:text="${roles}">
+                            </select>
+                        </div>
+
                         <input class="form-control btn btn-primary" type="submit" value="Register Cashier">
 
                     </form>
