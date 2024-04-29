@@ -1,40 +1,32 @@
 package com.coffeesoft.app.security;
 
+import com.coffeesoft.app.service.sauthentication.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
 
     @Bean
-    public InMemoryUserDetailsManager userDetailManager() {
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-        UserDetails user = User.builder()
-                .username("jhosep")
-                .password("{noop}1234")
-                .roles("EMPLOYEE").build();
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(UserService userService) {
 
-        UserDetails user2 = User.builder()
-                .username("kei")
-                .password("{noop}1234")
-                .roles("MANAGER").build();
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userService);
+        auth.setPasswordEncoder(passwordEncoder());
 
-        UserDetails user3 = User.builder()
-                .username("koenji")
-                .password("{noop}1234")
-                .roles("ADMIN").build();
-
-        return new InMemoryUserDetailsManager(user, user2, user3);
+        return auth;
     }
 
     @Bean

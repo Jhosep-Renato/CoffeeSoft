@@ -23,7 +23,6 @@ public class AdminFunctionalitiesImpl implements IAdminFunctionalitiesService {
         Account account = new Account();
         account.setUsername(theCashier.getDocument());
         account.setPassword("1234");
-        account.setRole("EMPLOYEE");
 
         theCashier.setAccount(account);
 

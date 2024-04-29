@@ -20,6 +20,7 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "role", referencedColumnName = "id_role")
+    private Role role;
 }
