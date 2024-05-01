@@ -1,7 +1,7 @@
 package com.coffeesoft.app.service.sauthentication;
 
-import com.coffeesoft.app.entity.Account;
-import com.coffeesoft.app.entity.Role;
+import com.coffeesoft.app.model.entity.Account;
+import com.coffeesoft.app.model.entity.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,7 +32,16 @@ public class UserServiceImpl implements UserService {
         TypedQuery<Account> query = entityManager.createQuery(HQL, Account.class);
         query.setParameter("username", username);
 
-        return query.getSingleResult();
+        Account account = null;
+
+        try {
+
+            account = query.getSingleResult();
+
+        } catch (RuntimeException ex) {
+            System.out.println("Not found");
+        }
+        return account;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.coffeesoft.app.repository.radmin;
 
-import com.coffeesoft.app.entity.Cashier;
+import com.coffeesoft.app.model.entity.Cashier;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;

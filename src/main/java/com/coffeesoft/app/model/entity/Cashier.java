@@ -1,4 +1,4 @@
-package com.coffeesoft.app.entity;
+package com.coffeesoft.app.model.entity;
 
 import jakarta.persistence.*;
 

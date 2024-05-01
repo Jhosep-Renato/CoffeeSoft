@@ -1,18 +1,20 @@
 package com.coffeesoft.app.controller.cashier;
 
-import com.coffeesoft.app.dto.SaleDto;
-import com.coffeesoft.app.entity.Product;
-import com.coffeesoft.app.entity.Sale;
+import com.coffeesoft.app.model.dto.SaleDto;
+import com.coffeesoft.app.model.entity.Product;
+import com.coffeesoft.app.model.entity.Sale;
 import com.coffeesoft.app.service.scashier.ISalesProductsService;
 import com.coffeesoft.app.service.scashier.ISalesService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -39,25 +41,26 @@ public class CashierController {
     }
 
     @GetMapping("/show-sale")
-    public String showSale(@PageableDefault Pageable pageable,
-                           Model model) {
+    public String showSale(@PageableDefault(size = 5) Pageable pageable,
+                           Model model, Authentication authentication) {
 
-        Page<Sale> pageSale = salesProductsService.findSaleAll(pageable);
+        Page<Sale> pageSale = salesProductsService.findSaleAll(pageable, authentication.getName());
+
 
         model.addAttribute("theSales", pageSale);
 
-        int totalPages = pageSale.getTotalPages();
-        int currentPage = pageSale.getNumber();
+        int totalPages = pageSale.getTotalPages(); // Pagina actual
+        int currentPage = pageSale.getNumber(); // Página
 
-        int start = Math.max(1, currentPage);
+        int start = Math.max(1, currentPage - 2);
         int end = Math.min(currentPage + 5, totalPages);
-
 
         if (totalPages > 0) {
 
             List<Integer> pageNumbers = new ArrayList<>();
 
             for (int i = start; i <= end; i++) {
+
                 pageNumbers.add(i);
             }
 
@@ -68,9 +71,9 @@ public class CashierController {
     }
 
     @PostMapping("/processProduct")
-    public String processProduct(@RequestBody Set<SaleDto> saleDto) {
+    public String processProduct(@RequestBody Set<SaleDto> saleDto, Authentication authentication) {
 
-        obtainService.saveSales(saleDto);
+        obtainService.saveSales(saleDto, authentication.getName());
 
         return "html/cashier/home-cashier";
     }

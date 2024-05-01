@@ -179,7 +179,6 @@
                                 <td th:text="${sale.minSale}" />
                                 <td th:text="'S/. ' + ${sale.totalSale}" />
                             </tr>
-
                         </tbody>
 
                     </table>
@@ -191,10 +190,12 @@
 
                         <li class="page-item" th:each="pageNumber : ${pageNumbers}"
                             th:classappend="${pageNumber == theSales.number + 1} ? 'active' : ''">
+
                             <a class="page-link" th:with="pageNum=${pageNumber - 1}"
                                th:href="@{'?page=' + ${pageNum} + '&size=' +
                                  ${theSales.size}}" th:text="${pageNumber}"
                                 ></a>
+
                         </li>
 
                     </ul>

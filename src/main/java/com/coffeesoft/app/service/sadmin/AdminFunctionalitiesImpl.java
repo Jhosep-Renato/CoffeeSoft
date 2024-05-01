@@ -1,10 +1,14 @@
 package com.coffeesoft.app.service.sadmin;
 
-import com.coffeesoft.app.entity.Account;
-import com.coffeesoft.app.entity.Cashier;
+import com.coffeesoft.app.model.entity.Account;
+import com.coffeesoft.app.model.entity.Cashier;
+import com.coffeesoft.app.model.entity.Role;
 import com.coffeesoft.app.repository.radmin.IAdminFunctionalitiesRepository;
 import jakarta.persistence.NoResultException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import static com.coffeesoft.app.model.enums.Role.*;
 
 import java.util.Optional;
 
@@ -18,11 +22,13 @@ public class AdminFunctionalitiesImpl implements IAdminFunctionalitiesService {
     }
 
     @Override
+    @Transactional
     public void saveCashier(Cashier theCashier) {
 
         Account account = new Account();
         account.setUsername(theCashier.getDocument());
-        account.setPassword("1234");
+        account.setPassword(new BCryptPasswordEncoder().encode("123"));
+        account.setRole(new Role(CASHIER.getId(), CASHIER.getRole()));
 
         theCashier.setAccount(account);
 
@@ -31,6 +37,7 @@ public class AdminFunctionalitiesImpl implements IAdminFunctionalitiesService {
     }
 
     @Override
+    @Transactional
     public Optional<Cashier> searchCashier(long dni) {
 
         if (dni == 0) {
@@ -51,6 +58,7 @@ public class AdminFunctionalitiesImpl implements IAdminFunctionalitiesService {
     }
 
     @Override
+    @Transactional
     public void updateCashier(Cashier cashier) {
 
         long dni = Long.parseLong(cashier.getDocument());

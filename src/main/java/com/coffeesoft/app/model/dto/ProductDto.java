@@ -1,4 +1,4 @@
-package com.coffeesoft.app.dto;
+package com.coffeesoft.app.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;

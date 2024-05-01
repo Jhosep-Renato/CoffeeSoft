@@ -1,6 +1,6 @@
 package com.coffeesoft.app.service.sadmin;
 
-import com.coffeesoft.app.entity.Cashier;
+import com.coffeesoft.app.model.entity.Cashier;
 
 import java.util.Optional;
 

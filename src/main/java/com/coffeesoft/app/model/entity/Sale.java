@@ -1,14 +1,15 @@
-package com.coffeesoft.app.entity;
+package com.coffeesoft.app.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Date;
 import java.sql.Time;
 
 @Entity
-@Table(name = "sale") @Setter @Getter
+@Table(name = "sale") @Setter @Getter @ToString
 public class Sale {
 
     @Id

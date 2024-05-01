@@ -1,4 +1,4 @@
-package com.coffeesoft.app.entity;
+package com.coffeesoft.app.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role", referencedColumnName = "id_role")
     private Role role;
 }

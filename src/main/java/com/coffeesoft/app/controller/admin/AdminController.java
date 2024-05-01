@@ -1,6 +1,6 @@
 package com.coffeesoft.app.controller.admin;
 
-import com.coffeesoft.app.entity.Cashier;
+import com.coffeesoft.app.model.entity.Cashier;
 import com.coffeesoft.app.service.sadmin.IAdminFunctionalitiesService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;

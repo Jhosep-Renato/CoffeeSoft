@@ -1,10 +1,15 @@
 package com.coffeesoft.app.service.scashier;
 
-import com.coffeesoft.app.dto.SaleDto;
-import com.coffeesoft.app.entity.*;
+import com.coffeesoft.app.model.dto.SaleDto;
+import com.coffeesoft.app.model.entity.Cashier;
+import com.coffeesoft.app.model.entity.Product;
+import com.coffeesoft.app.model.entity.ProductsSold;
+import com.coffeesoft.app.model.entity.Sale;
 import com.coffeesoft.app.repository.rcashier.IProductRepository;
 import com.coffeesoft.app.repository.rcashier.IProductSoldRepository;
 import com.coffeesoft.app.repository.rcashier.ISaleRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,18 +28,23 @@ public class SalesImpl implements ISalesService {
 
     private final IProductSoldRepository productSoldRepository;
 
+    private final EntityManager entityManager;
+
+
     @Lazy
     public SalesImpl(IProductRepository productRepository, IProductSoldRepository productSoldRepository,
-                     ISaleRepository saleRepository) {
+                     ISaleRepository saleRepository, EntityManager entityManager) {
+
         this.productRepository = productRepository;
         this.productSoldRepository = productSoldRepository;
         this.saleRepository = saleRepository;
-
+        this.entityManager = entityManager;
     }
+
 
     @Override
     @Transactional
-    public void saveSales(Set<SaleDto> saleProducts) {
+    public void saveSales(Set<SaleDto> saleProducts, String nameCashier) {
 
         try {
 
@@ -52,10 +62,7 @@ public class SalesImpl implements ISalesService {
                     })
                     .sum());
 
-            Cashier cashier = new Cashier();
-            cashier.setId(1);
-
-            sale.setCashier(cashier);
+            sale.setCashier(findCashier(nameCashier));
 
             Sale copySaleObject = saleRepository.save(sale);
 
@@ -65,7 +72,6 @@ public class SalesImpl implements ISalesService {
             throw new NullPointerException("There are null getProducts");
         }
     }
-
 
 
     @Transactional
@@ -88,5 +94,27 @@ public class SalesImpl implements ISalesService {
         }
 
         productSoldRepository.saveAll(productSales);
+    }
+
+
+    private  Cashier findCashier(String documentCashier) {
+
+        final String HQL = "FROM Cashier WHERE document =:documentCashier";
+
+        TypedQuery<Cashier> typedQuery = entityManager
+                .createQuery(HQL, Cashier.class);
+
+        typedQuery.setParameter("documentCashier", documentCashier);
+
+        Cashier cashier = null;
+
+        try {
+
+            cashier = typedQuery.getSingleResult();
+
+        } catch (RuntimeException ignored) {
+        }
+
+        return cashier;
     }
 }

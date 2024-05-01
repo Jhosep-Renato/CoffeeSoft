@@ -1,6 +1,6 @@
 package com.coffeesoft.app.repository.radmin;
 
-import com.coffeesoft.app.entity.Cashier;
+import com.coffeesoft.app.model.entity.Cashier;
 
 public interface IAdminFunctionalitiesRepository {
 
